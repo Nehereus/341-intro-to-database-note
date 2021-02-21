@@ -137,8 +137,247 @@ usage:
 
 SELECT name
 FROM instructor
-WHERE dept_name=‘Comp. Sci.'ANDsalary > 80000
+WHERE dept_name=‘Comp. Sci.'AND salary > 80000
 ```
 the code returns all instructors in the Comp. Sci. dept with salary > 80000
 
-### <a name="Joins"></a> Joins and Cartesian Product
+### WHERE
+
+``` 
+usage:
+
+SELECT name 
+FROM instructor
+WHERE salary between 90000 and 100000
+
+```
+the code returns the names of all instructors with salary between $90,000 and $100,000.
+
+## <a name="Joins"></a> Joins and Cartesian Product`
+* ~~~ ``` AND``` in WHERE clause, which connects two **relations**. ~~~
+*~~~Cartesian Product: multiple targets after the ```FROM  ```.    ~~~
+the concept is hard to explain, refer the example.
+```
+SELECT name, course_id
+FROM instructor, teaches
+WHERE instructor.ID = teaches.ID
+```
+the code return: For all instructors who have taught some course, find their names and the course ID of the courses they taught
+
+```
+
+SELECT section.course_id, semester, year, title
+FROM section, course
+WHERE section.course_id= course.course_id AND dept_name=‘Comp. Sci.
+
+```
+
+### Natural Join
+Natural join matches tuples with the same values for all common attributes, and retains only one copy of each common column.
+
+```
+usage:
+
+SELECT *
+FROM instructor NATURAL JOIN teaches;
+
+```
+
+assume there are two relations
+Instructor (ID, name, dept_name, salary)
+Teaches (ID, course_id, sec_id, semester, year)
+```
+e.g: 
+
+SELECT name,course_id 
+FROM instructor NATURAL JOIN teaches;
+
+which equal to 
+
+SELECT name, course_id
+FROM instructor, teaches
+WHERE instructor.ID = teaches.ID;
+
+```
+
+the code returns the names of instructors along with the course ID of the courses that they taught.
+
+#### Danger in natural join: Beware of unrelated attributes with same name getting matched incorrectly.
+
+assume there are 4 relations:    
+Instructor (ID, name, dept_name, salary)      
+Course (course_id, title, dept_name, credits)     
+Section (course_id, section_id, semester, year)     
+Teaches (ID, course_id, sec_id, semester, year)       
+
+* E.g  List the names of instructors along with the titles of all courses that they teach.
+
+INCORRECT VERSION: Natural join uses course.dept_name= instructor.dept_name    
+```
+SELECT name, title 
+FROM instructor NATURAL JOIN  teaches NATURAL JOIN course;   
+```
+
+correct version:
+```
+SELECT name, title                 
+FROM instructor NATURAL JOIN teaches, course 
+WHERE teaches.course_id= course.course_id;
+```
+reason:  This query lists the names of instructors along with the titles of the courses that they teach--ONLY for the courses in the dept they belong to.
+
+## Rename Operation
+``` AS ```:
+```
+usage:
+
+old-name AS new-name
+
+```
+
+```
+SELECT ID, name, salary/12 
+AS monthly_salary
+FROM instructor
+```
+Oracle does not allow AS
+
+## Ordering the Display of Tuples
+ORDER BY
+```
+usage:
+
+SELECT DISTINCT name
+FROM instructor
+ORDER BY  name
+
+```
+
+parameters: 
+ ```desc``` for descending order or ```asc``` for ascending order, for each attribute; ascending order is the default.
+ multiple attributes can be used.
+
+## Set Operations
+* Union: 
+  
+ ```
+  e.g: Find courses in Fall 2009 or in Spring 2010.
+
+  (select course_id 
+  from section 
+  where sem= ‘Fall’ and year = 2009)
+  union
+  (select course_id from section 
+  where sem= ‘Spring’ and year = 2010)
+
+  ```
+
+* intersect
+
+```
+e.g: Find courses that ran in Fall 2009 and in Spring 2010.
+
+
+(select course_id 
+from section 
+where sem= ‘Fall’ and year = 2009)
+intersect
+(select course_id from section 
+where sem= ‘Spring’ and year = 2010)
+
+```
+
+*  except
+```
+e.g Find courses that ran in Fall 2009 but not in Spring 2010.
+
+(select course_id 
+from section 
+where sem= ‘Fall’ and year = 2009)
+except
+(select course_id from section 
+where sem= ‘Spring’ and year = 2010)
+
+```
+
+## NULL
+```
+select sum (salary )
+from instructor
+```
+1. Above statement ignores null amounts.
+2. Result is nullif there is no non-null amount.
+3. All aggregate operations except count(*) ignore tuples with null values on the aggregated attributes.
+4.  collection has only null values, then count returns 0, All other aggregates return null.
+### is NULL
+used to check for null values.
+
+```
+e.g:
+select name 
+from instructor
+where salary is NULL
+```
+the code returns  Find all instructors whose salary is null."
+
+
+
+## logical connectives
+OR AND NOT
+
+## aggregate Functions
+* avg: average value     usage:```select avg(salary)```
+* min: minimum value     usage: ```select count (distinct ID)```  
+* find number of tuples         usage:```select count (*)    from course;```
+* max:  maximum values     
+* sum:  sum of values     
+* count:  number of values     
+
+## Queries With GROUP BY and HAVING
+syntax:
+```
+SELECT  [DISTINCT]  target-list
+FROM  relation-list
+WHERE  qualification
+GROUP BY  grouping-list
+HAVING  group-qualification
+
+```
+The relation that results from the SELECT-FROM-WHERE is grouped according to the values of all those attributes, and any aggregation is applied only within each group.
+```
+e.g
+assume 4 relations: Query: “Find the number of instructors in eachdepartment who teach a course in the Spring 2020 semester.”
+Instructor (ID, name, dept_name, salary)
+Course (course_id, title, dept_name, credits)
+Section (course_id, section_id, semester, year)
+Teaches (ID, course_id, sec_id, semester, year)
+Department(dept_name, building, budget)
+
+SELECT I.dept_name, Count(distinct T.ID)
+FROM Instructor I, Teaches T 
+WHERE I.ID= T.ID 
+AND T.semester=“Spring”
+AND T.year= “2020”
+GROUP BY   I.dept_name
+```
+
+* Attributes in select clause outside of aggregate functions **MUST** appear in group by list
+```
+/* erroneous query */
+SELECT dept_name, ID, avg(salary)
+FROM instructor
+GROUP BY dept_name;
+```
+
+### Having Clause
+```
+e.g:
+
+Find the names and average salaries of all departments whose average salary is greater than 60000.
+
+SELECT dept_name, AVG (salary)
+FROM instructor
+GROUP BY dept_name
+HAVING AVG (salary) > 60000
+```
+* Predicates in the HAVINGclause are applied afterthe formation of groups. whereas predicates in the WHEREclause are applied beforeforming groups.
