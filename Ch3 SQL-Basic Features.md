@@ -34,7 +34,7 @@ insert into instructor  values(‘10211’, null, ’Biology’, 66000);
 
 # Basic integrity constraints in Create Table
 ## not null:   
-  required
+  By default, a column can hold NULL values. The NOT NULL constraint enforces a column to NOT accept NULL values.
 ## primary key (A1, ..., An ), shortcut:
 
  ``` course_idvarchar(8) primary key,```
