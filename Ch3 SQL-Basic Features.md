@@ -155,7 +155,8 @@ the code returns the names of all instructors with salary between $90,000 and $1
 
 ## <a name="Joins"></a> Joins and Cartesian Product`
 *  <del> ``` AND``` in WHERE clause, which connects two **relations**. 
-* <del> Cartesian Product: multiple targets after the ```FROM  ```.    
+* <del> Cartesian Product: multiple targets after the ```FROM  ```.       
+
 the concept is hard to explain, refer the example.
 ```
 SELECT name, course_id
@@ -306,7 +307,7 @@ select sum (salary )
 from instructor
 ```
 1. Above statement ignores null amounts.
-2. Result is nullif there is no non-null amount.
+2. Result is null if there is no non-null amount.
 3. All aggregate operations except count(*) ignore tuples with null values on the aggregated attributes.
 4.  collection has only null values, then count returns 0, All other aggregates return null.
 ### is NULL
