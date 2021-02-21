@@ -154,8 +154,8 @@ WHERE salary between 90000 and 100000
 the code returns the names of all instructors with salary between $90,000 and $100,000.
 
 ## <a name="Joins"></a> Joins and Cartesian Product`
-* ~~~ ``` AND``` in WHERE clause, which connects two **relations**. ~~~
-*~~~Cartesian Product: multiple targets after the ```FROM  ```.    ~~~
+*  <del> ``` AND``` in WHERE clause, which connects two **relations**. 
+* <del> Cartesian Product: multiple targets after the ```FROM  ```.    
 the concept is hard to explain, refer the example.
 ```
 SELECT name, course_id
