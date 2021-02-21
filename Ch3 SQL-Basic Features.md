@@ -33,9 +33,9 @@ insert into instructor  values(‘10211’, null, ’Biology’, 66000);
 ```
 
 # Basic integrity constraints in Create Table
-* not null:   
-     required
-* primary key (A1, ..., An ), shortcut:
+## not null:   
+  required
+## primary key (A1, ..., An ), shortcut:
 
  ``` course_idvarchar(8) primary key,```
 foreign key (Am, ..., An ) references r
@@ -47,13 +47,41 @@ create table instructor(
     salary    numeric(8,2))
 
 ```
-* drop table **student**:
+## drop table **student**:    
+
  Deletes the table and its contents.
-* delete from **student**: Deletes all contents of table, but retains table.
-* alter table **r** add **A D**    
+## delete from **student**:       
+
+Deletes all contents of table, but retains table.      
+## alter table **r** add **A D**    
 where **A** is the name of the attribute to be added to relation **r** and **D** is the domain of A. And all tuples in the relation are assigned null as the value for the new attribute.  
 
-* alter table **r** drop **A**     
-  where Ais the name of an attribute of relationr.
+## alter table **r** drop **A**     
+  where **A** is the name of an attribute of relationr.
 
 # DML: Basic SQL Query Structure 
+## Basic SQL Query
+### relation-list: 
+A list of relation names (possibly with a range-variableafter each name).
+### target-list:
+A list of attributes of relations in relation-list
+### qualification                
+## The select Clause
+``` SELECTION```  = projection in relational algebra.    
+
+``` 
+e.g:
+ SELECT name
+ FROM instructor
+```
+ Notice: *SqL is CaSE InseNsitive*
+
+## distinct:
+force to eliminate the duplicates
+```
+e.g
+SELECT DISTINCT dept_name
+FROM instructor
+```
+
+## ALL:
