@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "code",
+			"path": "..\\..\\leetcodeNote\\code"
+		}
+	],
+	"extensions": {
+		"recommendations": [
+			"leetcode.vscode-leetcode"
+		]
+	}
+}
