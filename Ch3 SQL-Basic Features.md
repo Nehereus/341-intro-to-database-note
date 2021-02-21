@@ -60,13 +60,21 @@ where **A** is the name of the attribute to be added to relation **r** and **D**
   where **A** is the name of an attribute of relationr.
 
 # DML: Basic SQL Query Structure 
+```
+basic grammar:
+
+SELECT A1, A2, A3
+FROM R1, R2, R3
+WHERE p
+
+```
 ## Basic SQL Query
 ### relation-list: 
 A list of relation names (possibly with a range-variableafter each name).
 ### target-list:
 A list of attributes of relations in relation-list
 ### qualification                
-## The select Clause
+## SELECT 
 ``` SELECTION```  = projection in relational algebra.    
 
 ``` 
@@ -76,12 +84,61 @@ e.g:
 ```
  Notice: *SqL is CaSE InseNsitive*
 
-## distinct:
+### distinct:
 force to eliminate the duplicates
 ```
-e.g
+
+usage:
+
 SELECT DISTINCT dept_name
 FROM instructor
+
 ```
 
-## ALL:
+### ALL:
+kinda opposite to distinct which force NOT to eliminate duplicate
+
+``` 
+usage:
+
+SELECT ALL dept_name 
+FROM instructor
+```
+### asterisk(*)
+An asterisk in the select clause denotes “all attributes”
+
+###  others
+The SELECT clause can contain arithmetic expressions involving the operations +, –, x, and /, and operating on constants or attributes of tuples.
+```
+usage: 
+
+SELECT ID, name, salary/12
+FROM instructor
+
+```
+The code above will return ID, name, and salary divided by 12 from the relation instructor
+## FROM
+specify the target of the SELECT clause.
+target should be a relation.
+multiple targets are allowed after FROM, refer [Joins and Cartesian Product](#Joins).
+```
+usage:
+
+FROM target
+```
+
+## WHERE
+The WHERE clause specifies boolean algebra conditions that the result must satisfy, corresponding selection in relation algebra.
+
+logical connectives:  and, or, not are allowed.
+
+```
+usage:
+
+SELECT name
+FROM instructor
+WHERE dept_name=‘Comp. Sci.'ANDsalary > 80000
+```
+the code returns all instructors in the Comp. Sci. dept with salary > 80000
+
+### <a name="Joins"></a> Joins and Cartesian Product
