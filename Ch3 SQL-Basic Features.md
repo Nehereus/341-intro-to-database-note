@@ -141,7 +141,6 @@ WHERE dept_name=‘Comp. Sci.'AND salary > 80000
 ```
 the code returns all instructors in the Comp. Sci. dept with salary > 80000
 
-### WHERE
 
 ``` 
 usage:
